@@ -1,0 +1,167 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+  v2.0 | 20110126
+  License: none (public domain)
+*/
+
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+   margin: 0;
+   padding: 0;
+   border: 0;
+   font-size: 100%;
+   font: inherit;
+   vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+   display: block;
+}
+body {
+   line-height: 1;
+}
+ol, ul {
+   list-style: none;
+}
+blockquote, q {
+   quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+   content: '';
+   content: none;
+}
+table {
+   border-collapse: collapse;
+   border-spacing: 0;
+}
+
+
+:root{
+   font-family: Roboto, sans-serif;
+  
+}
+
+
+@font-face{
+   font-family: Roboto;
+   src: url(./Roboto/Roboto-Bold.ttf);
+}
+/* change to font inherit*/
+.intro-container{
+   display: grid;
+   width: 60vw;
+   margin: auto;
+   grid-template-columns: 1fr 1fr;
+   grid-template-rows: 100px 100px 200px;
+   align-items: start;
+   column-gap: 30vw;
+   align-content: center;
+   height: 100vh;
+   font-family: Roboto;
+}
+.intro-container select{
+   padding: 0px 20px;
+   color: white;
+   font-size: 2em;
+   font-family: Roboto;
+   border-radius: 15px;
+   height: 50px;
+   background: rgb(96, 207, 255);
+   border: 0;
+}
+.intro-container option{
+   height: 30px;
+}
+.intro-container input{
+   height: 50px;
+   border-radius: 15px;
+   border: 1px solid black;
+   margin-left: 10px;
+  
+}
+/*.intro-container *:nth-child(2n){
+   justify-self: end;
+
+
+}*/
+
+
+.start-game-btn{
+   grid-column: 1/3;
+   font-family: Roboto;
+}
+
+.game-container{
+   text-align: center;
+   width: 300px;
+   height: 300px;
+   margin: auto;
+   margin-top: 10vh;
+   margin-bottom: 5vh;
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   grid-template-rows: repeat(3, 1fr);
+   position: relative;
+}
+[class^='square']{
+   border: 1px solid black;
+   font-size: 5rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+h1:first-of-type{
+   text-align: center;
+   font-size: 4rem;
+   margin-top: 100px;
+}
+
+
+.winning-line{
+   position: absolute;
+   top: 0;
+   left: 0;
+}
+.x-square{
+   color: red;
+}
+.o-square{
+   color:blue;
+}
+.x-square, .o-square{
+   margin-bottom: 10px;
+}
+.new-game-btn,
+.start-game-btn{
+   margin: auto;
+   width: 200px;
+   display: grid;
+   align-items: center;
+   border-radius: 10px;
+   background: rgb(39, 222, 39);
+   color: white;
+   font-size: 2rem;
+   border:0;
+   height: 60px;
+}
+.end-message{
+   font-size: 3rem;
+   text-align: center;
+   margin-top: 50px;
+}
+.no-display{
+   display: none;
+}
