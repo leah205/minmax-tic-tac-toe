@@ -6,7 +6,11 @@
 //switch who goes first
 //rename checkTie to isgameover
 //two identical arrs from getPossibleGames when one spot open
-
+//change off between who goes first
+//does x always need to go first?
+//maybe say who is x and who is y
+//change it from pausing before starting game and if you double click it goes bad
+//add easy mode robot
 
 const gameBoard = (function(){
     let gameboard = ["","","",
@@ -20,129 +24,143 @@ const gameBoard = (function(){
    
     function findComputerIndex(symbol){
         //maxEvaArr = [];
-        return findSmartAIMove(symbol);
+        return minMax.findSmartAIMove(symbol);
         /*let index = Math.floor(Math.random() * 9);
         if(gameboard[index]) return findComputerIndex();
         return index;*/
     };
-    function findEmptyInArr(arr){
-        let count = 0;
-        for(let ele of arr){
-            if(!ele) count++;
-        };
-        return count;
-    }
-    function buildGameTree(symbol1, symbol2, board, currentSymbol){
-        
-        let symbol = currentSymbol;
-        //game.getCurrentPlayer().getSymbol();
-        
-        function createNode(arr){
-            let value = arr;
-            let children = [];
-            return {value, children}
-        };
-        let initialNode = createNode(gameboard);
-        
-         return populate(initialNode, findEmptyInArr(board) + 1, symbol);
 
-        function populate(node, height, symbol){
-            
-            if(height == 0 || findWin(symbol1, node.value) || findWin(symbol2, node.value)){
-                return;
+    const minMax = (function(){
+        function findEmptyInArr(arr){
+            let count = 0;
+            for(let ele of arr){
+                if(!ele) count++;
             };
-            let arr = node.value;
-        
-            for(let i = 0; i < getFreeIndexArr(arr).length; i++){
-                //pushes each child twice\
-                //trace it out
-                let newArr = arr.slice(0);
-                newArr[getFreeIndexArr(arr)[i]] = symbol;
-                let newSymbol = (symbol == symbol1)? symbol2:symbol1;
-                if(!node.children[i]){
-                    node.children.push(createNode(newArr));
-                    populate(node.children[i], height - 1, newSymbol);
-                }  
-            };
-            
-            return initialNode; 
-        };
-
-        function getFreeIndexArr(arr){
-            let indices = [];
-            for(let i = 0; i < arr.length; i++){
-                if(!arr[i]){
-                    indices.push(i);
-                }
-            };
-            return indices;
+            return count;
         }
-    };
-    let maxEvaArr = [];
-
-    
-    function minimax(node, depth, maximizingPlayer){
-        if(depth === 0 || node.children.length == 0){
-           return node;
-        }
-        if(maximizingPlayer){
-            let maxEva;
-            for(let child of node.children){
-                let eva = minimax(child, depth - 1, false);
-                if(depth === findEmptyInArr(gameboard)){
-                    child.outcome = eva;
-                    maxEvaArr.push(child);
-                }
-                maxEva = findMaxNode(eva, maxEva);   
+        function buildGameTree(symbol1, symbol2, board, currentSymbol){
+            let symbol = currentSymbol;
+            function createNode(arr){
+                let value = arr;
+                let children = [];
+                return {value, children}
+            };
+            let initialNode = createNode(gameboard);
+            function populate(node, height, symbol){
                 
+                if(height == 0 || findWin(symbol1, node.value) || findWin(symbol2, node.value)){
+                    return;
+                };
+                let arr = node.value;
+            
+                for(let i = 0; i < getFreeIndexArr(arr).length; i++){
+                    let newArr = arr.slice(0);
+                    newArr[getFreeIndexArr(arr)[i]] = symbol;
+                    let newSymbol = (symbol == symbol1)? symbol2:symbol1;
+                    if(!node.children[i]){
+                        node.children.push(createNode(newArr));
+                        populate(node.children[i], height - 1, newSymbol);
+                    }  
+                };
+                
+                return initialNode; 
+            };
+    
+            function getFreeIndexArr(arr){
+                let indices = [];
+                for(let i = 0; i < arr.length; i++){
+                    if(!arr[i]){
+                        indices.push(i);
+                    }
+                };
+                return indices;
+            }
+            return populate(initialNode, findEmptyInArr(board) + 1, symbol);
+        };
+        let maxEvaArr = [];
+    
+        
+        function minimax(node, depth, maximizingPlayer){
+            if(depth === 0 || node.children.length == 0){
+               return node;
+            }
+            if(maximizingPlayer){
+                let maxEva;
+                for(let child of node.children){
+                    let eva = minimax(child, depth - 1, false);
+                    if(depth === findEmptyInArr(gameboard)){
+                        child.outcome = eva;
+                        maxEvaArr.push(child);
+                    }
+                    maxEva = findMaxNode(eva, maxEva);   
+                    
+                };
+               
+                return maxEva;
+            
+                
+            }
+            else{
+                let minEva;
+                for(let child of node.children){
+                    let eva = minimax(child, depth - 1, true);
+                    minEva = findMinNode(eva, minEva);  
+                };
+                
+                return minEva;
+            }
+        };
+        function evaluateNode(node){
+            if(findWin(game.getCurrentPlayer().getSymbol(), node.value)){
+                return 1;
+            }
+            else if(findWin(game.getOtherPlayer().getSymbol(), node.value)){
+                return -1;
+            }
+            return 0; 
+        }
+        function findMaxNode(a,b){
+            if(!a) return b;
+            if(!b) return a;
+            let aValue = evaluateNode(a);
+            let bValue = evaluateNode(b);
+            
+            if(aValue > bValue) return a;
+            return b ;
+        };
+        function findMinNode(a,b){
+            if(!a) {
+                return b;
+            }
+            if(!b){
+                return a;
+            }
+            let aValue = evaluateNode(a);
+            let bValue = evaluateNode(b);
+            
+            if(aValue > bValue) return b;
+            return a ;
+        };
+        function findSmartAIMove(symbol){
+            let maxEva = minimax(buildGameTree("x", "o", gameboard, symbol), findEmptyInArr(gameboard), true);
+           
+            let optimalNode;
+            for(let i = 0; i < maxEvaArr.length; i++){
+                if(maxEvaArr[i].outcome == maxEva){
+                    optimalNode = maxEvaArr[i];
+                }
             };
            
-            return maxEva;
-        
-            
+            for(let i = 0; i < gameboard.length; i++){
+                if(optimalNode.value[i] && !gameboard[i]){
+                    return i;
+                }
+            }
         }
-        else{
-            let minEva;
-            for(let child of node.children){
-                let eva = minimax(child, depth - 1, true);
-                minEva = findMinNode(eva, minEva);  
-            };
-            
-            return minEva;
-        }
-    };
-    function evaluateNode(node){
-        if(findWin(game.getCurrentPlayer().getSymbol(), node.value)){
-            return 1;
-        }
-        else if(findWin(game.getOtherPlayer().getSymbol(), node.value)){
-            return -1;
-        }
-        return 0; 
-    }
-    function findMaxNode(a,b){
-        if(!a) return b;
-        if(!b) return a;
-        let aValue = evaluateNode(a);
-        let bValue = evaluateNode(b);
-        
-        if(aValue > bValue) return a;
-        return b ;
-    };
-    function findMinNode(a,b){
-        if(!a) {
-            return b;
-        }
-        if(!b){
-            return a;
-        }
-        let aValue = evaluateNode(a);
-        let bValue = evaluateNode(b);
-        
-        if(aValue > bValue) return b;
-        return a ;
-    };
-   
+        return {findSmartAIMove}
+       
+    })()
+    
     function resetGameBoard(){
         gameboard = ["","","","","","","","","",];    
     }
@@ -173,26 +191,9 @@ const gameBoard = (function(){
     function getSpotTaken(index){
         return (gameboard[index])? true: false ;
     };
-   
-    function findSmartAIMove(symbol){
-        let maxEva = minimax(buildGameTree("x", "o", gameboard, symbol), findEmptyInArr(gameboard), true);
-       
-        let optimalNode;
-        for(let i = 0; i < maxEvaArr.length; i++){
-            if(maxEvaArr[i].outcome == maxEva){
-                optimalNode = maxEvaArr[i];
-            }
-        };
-       
-        for(let i = 0; i < gameboard.length; i++){
-            if(optimalNode.value[i] && !gameboard[i]){
-                return i;
-            }
-        }
-    }
 
     return {addToBoard, findComputerIndex, getBoard, findWin, checkTie, 
-        getSpotTaken, getWinArr, resetGameBoard, findSmartAIMove};
+        getSpotTaken, getWinArr, resetGameBoard};
 
 })();
 
