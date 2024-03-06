@@ -145,8 +145,10 @@ h1:first-of-type{
    margin-bottom: 10px;
 }
 .new-game-btn,
-.start-game-btn{
+.start-game-btn,
+.back-btn{
    margin: auto;
+   margin-bottom: 10px;
    width: 200px;
    display: grid;
    align-items: center;
@@ -156,6 +158,9 @@ h1:first-of-type{
    font-size: 2rem;
    border:0;
    height: 60px;
+}
+.back-btn{
+   background: blue;
 }
 .end-message{
    font-size: 3rem;

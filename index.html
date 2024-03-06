@@ -11,11 +11,13 @@
    <div class="intro-container">
        <select name="" id="" class = "player-one">
            <option value="player">Player</option>
-           <option value="robot">Robot</option>
+           <option value="impossible">Impossible AI</option>
+           <option value="easy">Easy AI</option>
        </select>
        <select name="" id="" class = "player-two">
            <option value="player">Player</option>
-           <option value="robot">Robot</option>
+           <option value="impossible">Impossible AI</option>
+           <option value="easy">Easy AI</option>
        </select>
        <div class = "player-one">
            <label for="">Name:</label>
@@ -28,7 +30,12 @@
        <button class = "start-game-btn">Start Game</button>
    </div>
    <div class="main-container">
+    
        <h1>Tic-Tac-Toe</h1>
+       <div class = "score-container">
+         <div class="player-1-score"></div>
+         <div class="player-two-score"></div>
+       </div>
        <div class = 'game-container'>
            <div class="square0"></div>
            <div class="square1"></div>
@@ -41,6 +48,7 @@
            <div class="square8"></div>
        </div>
        <button class = "new-game-btn">New Game</button>
+       <button class = "back-btn">Back</button>
    </div>
   
   
