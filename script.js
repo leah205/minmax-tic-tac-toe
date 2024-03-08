@@ -1,6 +1,6 @@
 //maybe say who is x and who is y
 //change it from pausing before starting game and if you double click it goes bad
-//make responsive
+
 
 const minMax = (function(){
     function findEmptyInArr(arr){

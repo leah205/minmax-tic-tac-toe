@@ -53,7 +53,9 @@ table {
    font-family: Roboto, sans-serif;
   
 }
-
+*{
+   font-family: Roboto, sans-serif;
+}
 
 @font-face{
    font-family: Roboto;
@@ -62,20 +64,27 @@ table {
 /* change to font inherit*/
 .intro-container{
    display: grid;
-   width: 60vw;
+   width: 100vw;
    margin: auto;
-   grid-template-columns: 1fr 1fr;
+   grid-template-columns: repeat(2,min(250px, 40vw));
    grid-template-rows: 100px 100px 200px;
    align-items: start;
-   column-gap: 30vw;
+   column-gap: 10vw;
    align-content: center;
+   justify-content: center;
    height: 100vh;
    font-family: Roboto;
+}
+.intro-container input[type="text"]{
+   width: 0;
+  min-width: 100%;
+ 
+  
 }
 .intro-container select{
    padding: 0px 20px;
    color: white;
-   font-size: 2em;
+   font-size: 1em;
    font-family: Roboto;
    border-radius: 15px;
    height: 50px;
@@ -89,8 +98,12 @@ table {
    height: 50px;
    border-radius: 15px;
    border: 1px solid black;
-   margin-left: 10px;
-  
+   margin-left: 10px; 
+   margin-top: 5px; 
+}
+.intro-container label{
+   font-family: Roboto;
+   margin-left: 20px;
 }
 /*.intro-container *:nth-child(2n){
    justify-self: end;
@@ -165,8 +178,14 @@ h1:first-of-type{
 .end-message{
    font-size: 3rem;
    text-align: center;
-   margin-top: 50px;
+   margin-top: 10px;
 }
 .no-display{
    display: none;
+}
+.scoreboard{
+   display: block;
+   width: 300px;
+   height: 400px;
+   border: 1px solid black;
 }
