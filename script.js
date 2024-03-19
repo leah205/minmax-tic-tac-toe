@@ -51,7 +51,6 @@ const minMax = (function(){
     };
     let maxEvaArr = [];
 
-    
     function minimax(node, depth, maximizingPlayer, board){
         if(depth === 0 || node.children.length == 0){
            return node;
